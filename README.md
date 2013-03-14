@@ -18,3 +18,9 @@ GP2Lap can be cross compiled to DOS/4G with [Open Watcom](http://www.openwatcom.
 The included Makefile requires Windows XP/Vista/7/8, with the Watcom/BINNT directory in the search PATH.
 It can be run with nmake.exe and it will use wcc386.exe, wasm.exe and wlink.exe to build gp2lap.exe.
 To run gp2lap.exe in DOSBox, dos4gw.exe needs to be present too. It can be copied from the Watcom/BINW diretory.
+
+The very first time, use "nmake init" to create output directories.
+
+Use plain "nmake" to create "out\gp2lap.exe".
+
+Use "nmake publish" to create a zip and documentation in "pub\".
