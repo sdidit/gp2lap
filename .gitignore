@@ -1,5 +1,6 @@
-out
-pub
-inc
-lib
-src\auth.*
+/out
+/pub
+/inc
+/lib
+/src/auth.c
+/src/auth.h

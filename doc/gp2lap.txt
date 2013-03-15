@@ -1,0 +1,814 @@
+
+GP2Lap                                                            14-Aug-2001
+_____________________________________________________________________________
+
+
+GP2Lap version 1.15
+Copyright (c) 1998-2001 Frank Ahnert, Rene Smit
+You may not redistribute GP2Lap via any media or for any purpose without
+the express permission of the authors.
+
+GP2 Copyright (c) 1995 Geoff Crammond
+
+DOS/4GW Protected Mode Run-time  Version 1.97
+Copyright (c) Rational Systems, Inc. 1990-1994  
+
+Cryptlib Portable Encryption Libary, version 2.00
+Copyright Peter Gutmann, Eric Young, and Colin Plumb  1992-1996
+(http://www.cs.auckland.ac.nz/~pgut001/cryptlib/)
+
+
+
+DISCLAIMER
+==========
+
+This software is provided as is without warranty of any kind, either
+expressed or implied. The authors will not be held responsible for any
+losses incurred, either directly or indirectly, by the use of this program.
+
+This is not a Microprose product.
+
+
+
+What is GP2Lap
+==============
+
+GP2Lap is a real-time extension for GP2. Its main functions include
+logging information for online competitions, like processor occupancy,
+and showing on-screen information such as the current standings,
+fastest lap times, and a track map. Future versions of GP2Lap will
+contain additional features; just check the GP2Lap home page regurarly
+for updates.
+
+GP2Lap should work with all (language) versions of GP2. If you have
+trouble getting it to work with your version then please let us know.
+
+Please read this file and the only faq completely before contacting us.
+
+See the bottom of this file for our contact address and home page.
+
+
+
+Installation
+============
+
+Extract gp2lap.zip and dos4gw.zip to your GP2 directory.
+
+The zips contain the following files:
+
+- gp2lap.exe	The main executable.
+- gp2lap.pif	Shortcut to gp2lap.
+- gp2lap.txt	This file.
+- gp2lap.cfg	Standard configuration file.
+- dos4gw.exe	DOS-extender by Rational Systems, Inc.
+- faq.txt		Frequently asked questions.
+
+Minimum system requirements are the same as for GP2, but 16 Mb memory
+is recommended. It has been reported that GP2Lap or GP2 can give
+"out of memory" errors with only 8 Mb memory.
+
+
+
+Running GP2Lap
+==============
+
+GP2Lap is a 32-bit DOS program, just like GP2. It needs to load the
+"dos4gw.exe" dos-extender, which should be located within your PATH
+or in the same directory as GP2Lap. GP2Lap is supposed to be in the
+same directory as GP2.exe is located, but it's only necessary that
+the current directory is the GP2 directory for GP2Lap to run.
+
+
+Starting
+--------
+To start, just enter the gp2lap executable name at the dos prompt:
+
+gp2lap.exe
+
+Under Windows, you can also start GP2Lap with:
+
+start gp2lap.pif
+
+After GP2Lap is started it will try to find "gp2.exe" within the
+current directory. If it's found, the game is automatically started.
+Any command-line options you want to give GP2 should be passed to
+GP2lap, which will pass them to GP2.
+
+If GP2 is started correctly, the GP2Lap logo should appear at the
+right top of GP2's menu screen. If it's not there then something went
+wrong and GP2Lap probably isn't activated.
+
+
+Configuring
+-----------
+At startup, GP2Lap tries to read a configuration file called
+"gp2lap.cfg". This file contains options to configure GP2Lap to your
+liking. You can specify a different config file with the "cfg:" command
+line option. For example:
+
+	gp2lap cfg:hof25.cfg
+
+The configuration options will be explained thoughout this document.
+
+
+Key bindings
+------------
+GP2Lap uses so called pages to display some information at the top of
+the screen. The current key mappings for these pages are:
+
+'1' Car info.
+'2'	Debug log output.
+'8'	Track map.
+'9'	At The Line.
+'0' Turn off any active page.
+
+Each page could be optionally configured by pressing the same key
+again, or by pressing TAB or ` (key above TAB). Multiple pages can
+be activated at the same time by pressing <ctrl>+<pagenum>. The
+last activated page will receive keyboard input.
+
+See the chapters about each specific page for more information.
+
+
+Misc stuff
+----------
+- Pressing 'f' during a replay (either normal or hotlap) will toggle
+  fast-forward mode. This will only work if your PO is much lower than
+  100%, because no frames are being skipped. Instead, when a frame is
+  finished and fast-forward is active, GP2 will immediately start with
+  the next frame. For example, if your PO is 50%, fast-forward will make
+  the game run twice as fast.
+
+- Some GP2Lap menu messages appear in the same language as your gp2.exe
+  version (never mind the translation mistakes :). If you want them to
+  always be in English, use the following line in the .cfg file:
+
+    UseLocalizedStrings = 0
+
+- Custom track names in menu's. Enable this with the config option:
+
+	CatchTrackNames = 1
+
+  The track names will be extracted from the GP2INFO section of the
+  f1ctxx.dat file. Default tracks can have custom names too. Just add
+  it manually to the .dat file with a hex editor (don't forget to fix
+  the checksum), or use Paul Hoad's Track Editor. For example:
+
+  #GP2INFO|Name|Imola Track|Country|San Marino|#
+
+- Custom split time sections. Enable this with the config option:
+
+	CatchSplitSegs = 1
+
+  The split time sections will be extracted from the GP2INFO section of
+  the f1ctxx.dat file too. They are meant to be put in there by the
+  creator of the track. It can be done manually, but Track Editor v1.79
+  or newer supports it (older versions will crash when a track with custom
+  splits is loaded).
+  The splits have an own tag in the GP2INFO section, named Split1 and Split2.
+  The numbers can be decimal, hexadecimal (as shown below), or octal (with
+  leading zeros), and should be identical to the segment number shown in
+  the Track Editor. For example:
+
+  #GP2INFO|Name|Imola Track|Country|San Marino|Split1|0x0200|Split2|0x0300|#
+
+  With the Track Editor, e.g. just enter 0x0200 and 0x0300 into the Split1
+  and Split2 fields in the Track Name dialog.
+
+- Option Spa98 will try to simulate the start of the Belgium '98 GP.
+
+- Cockpit zooming. This is the same as the zoom setting in chase view,
+  which can be changed with keys 6 and 7. For the cockpit this setting
+  has to be set in the gp2lap.cfg file like this:
+
+	CockpitZoom = 256
+
+  A value of 256 is the default setting of GP2. Smaller means zooming out,
+  which results in more sense of speed, but also in 'stretched' cars. It's
+  similar to the fov (field of vision) setting in Quake.
+
+- Screenshot dump. No need to run pcxdump anymore. To create a screenshot
+  simply press F12. This will save a screenshot to file gp2_xxxx.bmp.
+
+- Pressing F8 will pause like 'p' or <space>, but without a "paused" message.
+
+- Screen output height. Specify the height in pixels with:
+
+	DrawLines = 194
+
+  This value is in pixels and has a maximum of 479.
+
+- Rcr values. Vincent van Vugt says: The lower the amount, the sooner it
+  will use the rcr-jam. If the amount is 0 it will only use rcr-jams (which is
+  *really* ugly by the way). Rcr-jams use less cpu-power so it's useful for
+  people with older computers.
+  Specify the values with the following options:
+
+	VgaRcr1 = 2128
+	SvgaRcr1 = 3200
+		How far away an rcr-jam will be used if you're looking from within the
+		cockpit.
+	VgaRcr2 = 2128
+	SvgaRcr2 = 3200
+		How far away an rcr-jam will be used if you're looking through an
+		onboard camera. This is one used within Paul's car editor.
+	VgaRcr3 = 2640
+	SvgaRcr3 = 4096
+		How far away an rcr-jam will be used if you're looking through the on
+		track camera's or if you're looking in front or rear of the car.
+
+
+
+Log System
+==========
+
+Introduction
+------------
+While you're playing GP2, GP2Lap is just sitting around, doing nothing
+but waiting for specific events to happen. These events include:
+starting GP2, starting a session, loading a game, entering/leaving the
+pit, crossing the finish line, etc.
+
+At all these specific events, the log system gets some information about
+the event, which is then stored in memory buffers. When you save your
+hotlap or game, most of the information is attached to the file being
+saved. These are called "GP2Lap extended files".
+
+As of version 1.07, it's possible to save this information to a
+separate .GLx file. The following line in gp2lap.cfg will enable this:
+
+	logGLX = 1
+
+The .GLx file will have the same name as the saved game/hotlap, and
+will also contain driver names and car setups. They can be read by
+HOF2Lap 0.55+ and F1LapView 1.02+.
+
+Additionally, this option will allow you to log computer cars by
+enabling the following option:
+
+	logCC = 1
+
+This option won't work for the GP2Lap extended files because the
+amount of data will overflow GP2's own internal save buffer.
+
+
+Hotlaps
+-------
+Extended hotlaps will contain general information and info for this
+specific lap.
+
+General information includes all 'physics' (of which some can be edited
+with the so called Quick 'n' Dirty editor), car damage limit values,
+pit speed limit, track information, computer car performance, and more.
+
+Lap information includes lap time, average and maximum processor
+occupancy (to detect 'slomo' driving), and more.
+
+Extended info can be extracted from the hotlap with HOF2Lap,
+version 0.50 or later. Go to the HOF2Lap home page to download it:
+http://www.geocities.com/MotorCity/Downs/3987/
+
+
+Saved games
+-----------
+Extended save games will contain general information and lap information
+for all laps. This information can be extracted by HOF2Lap too. When an
+extended game is loaded, its logged data for each lap will be loaded too.
+
+
+
+Authentication disclaimer
+-------------------------
+If you're being disqualified do NOT contact us. Contact the competition
+director(s). If the extended save game or hotlap seems to be corrupted
+in some way causing the disqualification, the director will contact us,
+and we will look into it. Remember that things like an edited track (no
+matter how little the change) is logged by GP2Lap and might cause
+your disqualification. Make sure you always use the correct car set
+and tracks (the ones specified by the competition rules).
+Also remember that validating the saved games is done by the director,
+a database script, and/or a verification team, not by GP2Lap or HOF2Lap.
+GP2Lap just logs raw data, it doesn't interpret it.
+
+
+Debug info
+----------
+GP2Lap can dump some debug info about most events in a separate logfile
+called "gp2lap.log". This is readable text, so you can see what has
+happened exactly, or you can send it to us in case you suspect there's
+something wrong. It's of no other use, so you can as well ignore it.
+It can be turned on by specifying this line in the configuration file:
+
+logDebug = 1
+
+The name of the logfile can be specified with:
+
+logDebugName = "gp2lap.log"
+
+Note: this is not the main log file of GP2Lap! It's just for debugging
+purposes. The real log information is attached to save files.
+
+You can view this info in-game by pressing the '2' key
+while you're in the cockpit. To specify the number of lines use:
+
+	logDebugScreenLines
+
+Range is 3..20, default is 12.
+
+
+Extension of perf files
+-----------------------
+Version 1.04 introduces extension of perf data. To enable it, add the
+following to the gp2lap.cfg file:
+
+logPerf = 1
+
+GP2Lap will then add car position data and high-resolution wheel speed
+data to the perf files you save. It will also save a special data file
+with track data in directory "gp2lpdat" under the main GP2 directory,
+which is used by F1PerfView to draw a track.
+
+Warning: with longer laps (about 1m40 and longer, or bigger than 75KB),
+the internal GP2 perf viewer will complain about the size when you load
+the perf file. If you're using the internal viewer and not F1PerfView,
+disable the logPerf option to prevent this error.
+
+
+
+At The Line
+===========
+
+GP2Lap provides some additional timing information to improve gameplay.
+Have you ever wondered about your inpit/outpit laptimes? Now you'll
+get them. Are you tired of waiting for the next straight to take a quick
+look at other cars' laptimes? You'll get them too and much more...
+
+
+Usage
+-----
+Just hit '9' while sitting in the car to turn it on.
+Within "At the line", display can be changed using the following keys:
+
+    '9' :  change the size of the board
+    '~' :  scroll through positions (note: this is the key above the TAB
+           key and left of the '1' key ;). Use shift to scroll back.
+    TAB :  switch between different tables. Use shift to switch in
+		   reverse order.
+    '0' :  turn off
+
+Currently, the following tables are available:
+
+(1)  Pos  Driver	      behind
+     -------------------------------
+      01. Hill           1:43:47.407
+      02. R Schumacher   +0.932
+      03. Alesi          +7.240
+      04. Frentzen       +32.242
+      05. Diniz          +51.682
+
+     Shows the gaps between the cars.
+
+(2)  Pos  Driver	     laptime
+     -------------------------------
+      01. Hill          1:47.407  <- 3
+      02. R Schumacher  1:49.932
+      03. Alesi         1:47.240  <- 2
+      04. Frentzen      1:32.242  <- 1
+      05. Diniz         1:51.682
+
+     Shows the actual laptimes of all cars. The three fastest
+     laps will be marked.
+
+
+Notes
+-----
+- These tables will be updated in real-time, but may contain some
+  glitches, especially after a replay or loading a game.
+- These tables only work in race sessions. In non-race sessions they
+  are replaced by two other tables that show sector times and the
+  ideal lap time. The sector times can be compared with any other
+  driver.
+- Displaying these tables can add upto about 10% to your processor
+  occupancy, depending on your system configuration.
+
+
+Configuration
+-------------
+The following configuration options are available:
+
+atlNoFastestLap
+	Don't show "Fastest Lap by...." if active.
+atlSplit1Color
+	Taken from gp2's color palette, default: 135 (lblue).
+atlSplit2Color
+	Default: 125 (blue).
+atlLineColor
+	Default: 151 (dblue).
+atlAcrossTop
+	Show info across the top of the screen.
+atlMarkTopX
+	How many cars to mark on the laptime board, range is 3..9.
+
+
+
+Track Map
+=========
+
+This feature will show a top view of the track, which will give
+you the opportunity to know what's going on elsewhere on the
+track.
+
+For example, during qualify it will be easier to determine when
+the track is clear (or not, if you want slipstreams), so you
+can start your flying lap at the right moment. It also helps to
+know when you can rejoin the track without crashing into other
+cars after you went off.
+
+The map will show a track, a pit lane, split section borders,
+and all the cars on it as little dots (or off it if they went
+off-track).
+
+
+Usage
+-----
+The track map can be enabled by pressing '8'. Press '8' again
+to change the alignment (left, middle, right, top, bottom, etc.).
+If it's on the left or right, it will also be clipped so it won't
+distract too much from your race.
+
+While the track map is enabled, press the <TAB> key to change the
+zoom level. There are six zoom levels. The smallest one will show
+you the whole track, and it won't move. The other zoom levels will
+center the selected car's position, so the track will scroll while
+you're driving. It will also rotate according to the selected
+car's speed angle. This can be toggled with 'm'.
+
+You can press '0' (or a different page) to disable the track
+map.
+
+Press ~ (above TAB) to change the track color.
+
+
+Car Colours
+-----------
+The player cars are blinking red. If the pit light is enabled,
+they will be blinking yellow.
+
+The computer cars are white. If they go to the pit, they will
+be yellow. If you select a computer car (up/down arrows), that
+car will be blinking green, even if it's going to pit.
+
+If a car has retired, it will be dark red. It stays in view,
+even if it has been removed from the track (it's lying there
+behind the wall).
+
+
+Notes
+-----
+The track width may not seem correct sometimes. This is because
+it isn't calculated, but the pixels are just made bigger according
+to the zoom level.
+
+
+Configuration
+-------------
+The configuration options provided for the track map are:
+
+mapZoom
+	Zoom level, range 0..5, 0 shows the whole track.
+mapTrackColor
+	Initial color of the track to start with.
+mapHAlign
+	Initial horizontal alignment.
+	0 = left, 1 = center, 2 = right.
+mapVAlign
+	Initial vertical alignment. It's relative to mapMaxY.
+	0 = top, 1 = center, 3 = bottom. 
+mapRotate
+	Initial rotation setting (1 is enabled).
+mapMaxY
+	Y clipping. Maximum is the DrawLines setting. Note that the
+	outside view is 400 pixels high.
+	VGA will use half the value specified here.
+mapDotSize
+	Dot sizes of cars at each of 6 zoom levels. Default 122358,
+	min. 111111, max. 999999.
+mapDotSizeVGA
+	Same as mapDotSize, but for VGA. Default 111235.
+
+
+
+Car Info
+========
+
+This shows you information about the selected car. It is to provide
+this info for those that like to drive using the external view.
+Currently shows the gear, revs, and speed.
+It is on a separate page, and can be activated by pressing '1'.
+Pressing '1' again toggles the alignment from left to right.
+
+
+Track Manager
+=============
+
+From version 1.13 onwards it's possible to tell GP2Lap which track
+files should be used. These can be specified in the .cfg file. The
+following options are available:
+
+f1ct01
+	Path of track file. E.g. "circuits\brazil99.dat".
+f1ct02
+...
+f1ct16
+
+The specified paths have to be relative to the GP2 directory and
+must be in DOS file name format.
+
+Further options:
+
+CatchTrackInfos
+	Try catching GP2INFO's from custom track files. This info
+	will be shown at the bottom of the track menu. More
+	importantly, this will patch hardcoded tables within GP2 that
+	will fix distances, average speed, multiplayer turns, etc.
+CatchSplitSegs
+	Try catching new splits from custom track files.
+MenuTrackMap
+	Draw a simple track map layout in the track selection menu.
+	This replaces the usual bitmap. Default 0 (off).
+
+
+
+Ipx Linkup
+==========
+
+Since version 1.01 GP2Lap contains ipx network support for GP2's
+dual-player link mode.
+
+
+Notes
+-----
+- You can only play head to head with another person.
+- It's exactly like a normal serial linking, but using Ipx interface
+  instead of a null-modem cable.
+- Don't expect performance wonders, although one person claimed it's
+  being slightly faster than serial link.
+
+
+Usage
+-----
+- In preparation to starting a link, specify the following in gp2lap.cfg:
+
+  UseIPXLink = 1
+  MyLinkName = "YourName Here"
+
+- After starting gp2lap.exe you'll see:
+
+  >>>Searching players [-]
+
+- Once GP2Lap found some players, it will change f.i. to:
+
+  >>>Found 2 players. Choose player -["Paul Tracy" (00001B30BC57)]
+
+- Select the player you wanna race against, using <up>/<down> or <enter>.
+  Next, you'll see this:
+
+  >>>Awaiting reply from "Paul Tracy" [/]
+
+- You'll get notice whether the person wants to play with you or not.
+
+
+Tech Stuff
+----------
+- Currently using ipx socket 0x5100 only.
+- The handshake is quite clumsy, but please don't complain.
+- We did some successfull tests under DOS and(!) Win95.
+
+
+
+HOF2.5
+======
+
+Version 1.03 introduces HOF2.5 mode. Since version 1.12 it will work
+in all non-race sessions.
+You can enable it with the following line in the .cfg file:
+
+hof25Enable = 1
+
+The GP2Lap archive includes an example configuration file for HOF2.5,
+and a batch file (hof25.bat) to start GP2Lap with this .cfg file.
+
+During this mode, GP2Lap will do some extra checks for hotlapping,
+specifically for hotlaps that will be entered in the Hall Of Fame 2.5,
+although it will be of use for other leagues too.
+So make sure you only activate it when it's required for the
+league you're competing in.
+
+
+Extra checks
+------------
+The following things are currently being checked:
+- Tracks must be HOF2.5 compliant. All default tracks, and all
+  custom tracks being downloaded from the HOF2.5 home page are
+  HOF2.5 compliant. GP2Lap will check a track file after it's
+  being loaded. Tracks must also be placed into the correct slot.
+- Cutting chicanes. At some chicanes GP2Lap checks if they're
+  being cut off. If that is the case, you will lose each wheel
+  that is not on the track.
+- Load from saved game. If you load your unlimited practice
+  session from a saved game, this game must have been saved
+  while GP2Lap was active and in HOF2.5 mode.
+- Slowdown before start of lap. When you load your game to the
+  end of the warmup lap, you must have saved it before the last
+  corner. To mandate this, GP2Lap checks if you've slowed down
+  between the load and the start of the lap for at least about
+  half a second. If you haven't slowed down, the '2' output will
+  appear with a warning that this lap will be disqualified.
+- Detail changes. To prevent influencing the processor occupancy
+  during a lap, GP2Lap checks any detail level changes (alt-d).
+  If it's detected, the lap is disqualified.
+- Indestructability changes. In HOF2.5, usage of F4 is not
+  allowed. If GP2Lap detects that it's used during a lap, the lap
+  will be disqualified.
+
+For some of these checks menu messages may appear while loading
+a track or while saving the hotlap, informing you of the
+disqualification. In some of these cases (last four of the above
+checks), the saved hotlap will not contain GP2Lap extended
+information at all.
+
+Visit the HOF2.5 home page for more information:
+
+	Analog:  http://www.sim-racing.net/HOF25/main_menu.htm
+	Digital: http://gallery.uunet.be/year1440/index.html
+
+
+
+Thanks
+======
+
+We'd like to thank the following people:
+
+Jo Helsen. Without him GP2Lap wouldn't exist.
+
+Furthermore (in alphabetical order):
+Marc Aarts, Marcel Borsboom, Christopher Brylka, Anton Dachounine,
+Robert Doyle, Viktor Gars, Dimitry Gerards, Chris Graff, Steve Holgeth,
+Ruben Jubeh, Brett Knuchel, Enrico Marcolin, Chris Meech, Cesar Mello,
+Barrie Millar, Ari Nieminen, Christopher Orr, Rafa, Daniel Roscoe,
+Jacques Rousseau, Daniel Ryan, Marcel Schot, Robin Smit, Malcolm Tedd,
+Marc Thibeault, Ivanhoe Vasiljevich, Vincent van Vugt, Mike Wallace,
+Larry Watson, Ralf Weissbach.
+
+Trevor Kellaway, for creating GPLapTim, the program that has directly
+inspired GP2Lap.
+
+Anyone else we forgot.
+
+
+
+Revisions
+=========
+Version 1.15, 14-Aug-2001
+	- Added a car info page.
+	- Fixed the country adjectives.
+
+Version 1.14, 12-Jan-2000
+	- Tyre wear value is now logged. All default values used to be logged
+	  within the init checksum, but since GP2Lap now patches this table,
+	  it needs to be logged separately, else you'd need to view the hotlap
+	  to detect it (car would crash). A note for file checkers: it's best
+	  to always view hotlaps anyway, because this is still the best way to
+	  check their validity concerning editable values that are not saved
+	  into the hotlap file (like the track file).
+
+Version 1.13, 09-Jan-2000
+	- Built-in track manager. This should fix the problems with distances,
+	  average speed, etc. See "Track Manager" section for more info.
+	- Fixed key handler bug. Keys now work in external views again.
+
+Version 1.12, 24-Dec-1999
+	- Multiple page activation with <ctrl> key (warning: uses relatively
+	  more PO).
+	- Screenshots should now work properly with most video cards.
+	- If used, HOF2.5 mode is now active for all non-race sessions.
+	- Clears 'incompatible' flag after loading a compatible game.
+	  If you're viewing old hotlaps, make sure you load a compatible
+	  game afterwards to avoid 'incompatibility' problems (or
+	  restart gp2 if you want to start a new session for your league).
+	- Added paranoia checks for saved game compatibility (loading
+	  pre-1.12 saved games will mark them as 'old', and pre-1.07
+	  saved games as 'incompatible').
+	- Fixed a problem with loading uncompressed games (normally they
+	  were only uncompressed when using the first release of 1.11, which
+	  contained a bug that caused this).
+	  Thanks to Christopher Brylka and Daniel Ryan for helping out to find
+	  this problem. It looks like this caused a large part of all the
+	  'incompatible' games of LFRS drivers.
+	- Configurable dot size in track map.
+	- Split sector border dots in track map.
+	- Change height of page '2' by reselecting it.
+
+Version 1.11, 10-Nov-1999
+	- Fixed At the Line and added more functionality.
+	- Added several .cfg options for At the Line.
+	- Rotating track map.
+	- VGA support for track map.
+	- Added several .cfg options for the track map.
+	- Adjustable GP2Lap screen output height.
+	- F8 is freeze screen without "paused" message.
+	- Rcr values explained.
+	- Pod support. If someone happens to have one, please contact us.
+
+Version 1.10 BETA, 24-Sep-1999
+	- Removed some more incompatibility problems with Windows. If you
+	  had trouble running GP2Lap under Windows before, try this beta
+	  version and see if the problem persists. If it does, please
+	  contact us again.
+	- Fixed GP2 bug that caused it to crash upon saving files under
+	  Windows.
+	- Fixed saving of races when using a GP2Video patched gp2.exe.
+	  Thanks to Rafa for pointing out how to fix this.
+	- "Against" in At The Line for comparing sector times and
+	  calculating the ideal laptime during non-race sessions.
+	  Please note that the 'behind' table doesn't work anymore in
+	  this beta. Hopefully this will be fixed in the official release.
+	- Added VGA support for At The Line.
+	- Creating screenshots with F12 (gp2_xxxx.bmp).
+	- Cockpit zooming for more (or less) sense of speed.
+
+Version 1.09, 14-Aug-1999
+	- Should now run under Windows 98 without 'hanging'.
+	- Added an option to hide Windows 3/9x for GP2. This might
+      solve some potential problems.
+	- In the track map, computer cars will be gray if they're not in
+	  the same lap as the leader.
+
+Version 1.08, 06-Aug-1999
+	- Added a track map.
+
+Version 1.07, 28-Jul-1999
+	- Improved checks for changing checksums after loading games.
+	  Saved games will now be rendered 'incompatible' not only by
+	  loading an extended game with different checksums, but also if
+	  the loaded game wasn't extended at all. Also, this flag is kept
+	  for much longer (until GP2 quits). The reason is that GP2Lap
+	  can't find out what side effects the loading caused. So, if
+	  you're participating in a league that uses GP2Lap to validate
+	  your saved games, make sure you only load extended games, which
+	  were saved with the exact same configuration, or don't load
+	  anything at all.
+	- Added saving of separate .GLx file with extended information,
+	  which also allows logging of computer cars.
+	- Disabled CC checksum check (as long as it isn't fixed).
+
+Version 1.06, 02-Apr-1999
+	- Custom split time sections.
+	- Custom track names in menu's.
+	- Fixed a bug that messed up the custom track name in the extended
+	  data.
+	- Extra CC performance checksum is being logged.
+	- Some extra flags for cheat detection.
+	- While (re)loading games the extended data is now preserved.
+
+Version 1.05, 16-Jan-1999
+	- Bug fix: segment data for track now saved correctly (it gave a
+	  "load aborted" message instead).
+
+Version 1.04, 10-Jan-1999
+	- Added extension of perf files with car position data.
+
+Version 1.03, 09-Dec-1998
+	- Fixed pit-in session time and lap time.
+	- Added HOF2.5 features. See HOF2.5 home page for more information.
+	- Added fast-forward during replays (with 'f' key).
+	- Added slomo time to log data (number of seconds the PO was >100%).
+	- Some bug fixes.
+
+Version 1.02, 24-Oct-1998
+	- Added on-screen log output (press '2' during game).
+	- Some other minor improvements.
+	- Some bug fixes.
+
+Version 1.01, 14-Oct-1998
+    - Added IPX routines.
+    - Added split times during race.
+    - Disabled logging of PO before a race has started.
+    - Added some experimental stuff (only for experienced users!).
+    - Minor bug fixes.
+
+Version 1.00, 26-Sep-1998
+	First release.
+
+
+
+Contacting us
+=============
+
+All bug reports, complaints and suggestions should be sent to:
+    
+  gp2lap@gmx.net
+
+The GP2Lap home page is located at:
+
+  http://rsdi.home.xs4all.nl/gp2lap.html

@@ -1,0 +1,833 @@
+
+GP2Lap                                                            12-Jan-2000
+_____________________________________________________________________________
+
+GP2Lap version 1.14
+Droits d'auteur (c) Frank Ahnert, Rene Smit 1998-2000 Vous ne pouvez
+re-distribuer GP2Lap par aucun média, ou pour tout autre usage sans la
+permission des auteurs.
+
+GP2, Droits d'auteur (c) Geoff Crammond 1995
+
+DOS/4GW Protected Mode Run-time Version 1.97
+Droits d'auteur (c) Rational Systems, Inc. 1990-1994
+
+Cryptlib Portable Encryption Library, Version 2.00
+Droits d'auteur (c) Peter Gutmann, Eric Young, et Colin Plumb 1992-1996
+(http://www.cs.auckland.ac.nz/~pgut001/cryptlib/)
+
+
+
+
+AVERTISSEMENT
+=============
+
+Ce programme vient comme il est et sans aucune garantie. Les auteurs ne seront
+tenus responsables de toutes pertes survenues, que ce soit directement ou
+indirectement, suite à l'usage de ce programme.
+
+Ceci n'est pas un produit Microprose.
+
+
+
+
+Qu'est-ce que GP2Lap
+====================
+
+GP2Lap est une extension en temps réel pour GP2. Ses fonctions principales
+incluent un fichier qui enregistre des données pour les compétitions en-ligne,
+comme l'occupation du processeur (processor occupency), et montrer des
+information à l'écran comme le classement présent, les tours les plus rapides,
+un carte du circuit. Les futures versions de GP2Lap contiendront des élements
+additionnels; surveillez la page web de GP2Lap pour les mises à jour.
+
+GP2Lap devrait fonctionner avec toutes les versions de GP2 (Language). Si vous
+avez des problèmes à faire fonctionner votre version, svp, faites-nous en part.
+
+Svp, lisez ce fichier et le FAQ complètement avant de nous contacter.
+
+Regardez au bas de ce fichier pour savoir où nous contacter et nous visiter.
+
+
+
+
+Installation
+============
+
+Extraire les fichiers gp2lap.zip et dos4gw.zip dans votre répertoire GP2
+
+Ces zips contiennent les fichiers suivant:
+
+- gp2lap.exe    Le programme principal
+- gp2lap.pif    Racourci vers gp2lap
+- gp2lap.txt    Ce fichier
+- gp2lap.cfg    Fichier de configuration
+- hof25.cfg            Un exemple de configuration pour le mode HOF2.5
+- hof25.bat            Fichier pour démarrer GP2Lap en mode HOF2.5
+- dos4gw.bat    DOS-extender par Rational Systems, Inc.
+- faq.txt       Questions fréquemment posées.
+
+Les requierments minimal sont les mêmes que pour GP2, mais 16 Mb de mémoire
+est recommendé. On nous a reporté que GP2Lap ou GP2 peuvent donner des erreurs
+"Out of memory" avec seulement 8 Mb de mémoire.
+
+
+
+
+Faire fonctionner GP2Lap
+========================
+
+GP2Lap est un programme DOS 32-bits, comme GP2. Il doit charger le
+DOS-extender "dos4gw.exe", qui doit être placé dans le même répertoire que
+GP2Lap. GP2Lap est devrait être dans le même répertoire que gp2.exe, mais il
+est seulement nécessaire que le répertoire présent soit le répertoire GP2 pour
+que GP2Lap fonctionne.
+
+
+
+Démarrage
+=========
+Pour démarrer, tapez le nom du programme GP2Lap dans DOS:
+
+gp2lap.exe
+
+Sous Windows, vous pouvez aussi démarrer GP2Lap avec:
+
+start gp2lap.pif
+
+Une fois GP2Lap démarré, il va essayer de trouver "gp2.exe" dans le répertoire
+présent. Si il le trouve, le jeux est automatiquement lancé. Toute
+ligne-commande vous voulez donner à GP2 devrait être passées à GP2Lap, qui les
+passera ensuite à GP2.
+
+Si GP2 est lancé correctement, le logo GP2Lap devrait apparaitre dans le coin
+supérieur droit de votre écran. S'il n'est pas là, alors quelque chose ne
+s'est pas passé correctement et GP2Lap ne s'est pas activé.
+
+
+
+Configurer
+==========
+Au démarrage, GP2Lap essaie de lire un fichier de configuration nommé
+"gp2lap.cfg". Ce fichier contient les options pour configurer GP2Lap à votre
+goût. Vous pouvez spécifier un autre fichier config avec la ligne-commande
+"cfg:". Par exemple:
+
+         gp2lap cfg:hof25.cfg
+
+Les options de configuration vont vous être expliquées au travers de ce
+document.
+
+
+
+Les clés
+========
+GP2Lap utilise des "pages" pour montrer des informations au haut de l'écran.
+Les clés actuelles pour ces pages sont:
+
+'2'      Création d'un fichier débogueur.
+'8'      Carte du circuit.
+'9'      A la ligne.
+'0'      Fermer toute page active.
+
+Chaque page pourrait être configurée autrement en pressant la même touche une
+seconde fois, ou en pressant TAB ou # (la clé au-dessus de TAB).
+
+Consultez les chapitres sur chaque pages pour plus d'informations.
+
+
+
+Attributs divers
+================
+- En pressant sur 'f' pendant une reprise (normale ou hotlap), vous activez le
+mode avance-rapide. Ceci ne fonctionnera que si votre PO est beaucoup plus bas
+que 100%, parce qu'aucune séquence n'est passée. A la place, quand une
+séquence est terminée et que l'avance-rapide est activé, GP2 va immédiatement
+démarrer avec la séquence suivante. Par exemple, si votre PO est de 50%,
+l'avance-rapide va faire rouler le jeux deux fois plus rapidement.
+
+- Quelques menus de GP2Lap apparaissent dans la même langue que la version de
+gp2.exe (svp, laissez tomber les erreurs de traduction :). Si vous voulez
+qu'ils soient toujours en anglais, utilisez la ligne suivante dans le fichier
+.cfg:  
+        UseLocalizedStrings = 0
+
+- Pour que GP2Lap détecte et change automatiquement les noms des circuits dans
+les menus. Activez cette fonction avec cette ligne:
+
+          CatchTrackNames = 1
+
+Les noms des circuits seront extraits de la section GP2INFO dans le fichier
+f1ctxx.dat. Les circuits par défaut peuvent aussi avoir des noms différents.
+Vous n'avez qu'à le changer manuellement avec un hex editor (n'oubliez pas de
+corriger le checksum) ou avec le Track Editor de Paul Hoad. Par exemple:
+
+  #GP2INFO|Nom|Circuit Imola|Pays|San Marino|#
+
+- Pour que GP2Lap détecte automatiquement les splits sur le circuit, activez
+cette fonction:
+
+         CatchSplitSegs = 1
+
+Les splits vont être extraits de la section GP2INFO du fichier f1ctxx.dat.
+Ils devraient être placés par le créateur du circuit.  Vous pouvez le faire
+manuellement, mais il n'y a que le Track Editor version 1.7.9 ou plus qui
+supporte cette fonction. (Les anciennes versions vont geler quand vous
+chargerez un circuit avec des splits définis). Les splits ont leur propre noms
+dans la section GP2INFO, ils sont nommés, Split1 et Split2. Les chiffres
+peuvent être décimaux, hexadécimaux (comme démontré plus bas), ou octaux (avec
+un zéro en tête), et ils devraient être identiques au nombre du segment dans
+le Track Editor. Par exemple:
+
+   #GP2INFO|Nom|Circuit Imola|Pays|San Marino|Split1|0x0200|Split2|0x0300|#
+
+Avec le Track Editor, vous n'avez qu'à entrer 0x0200 et 0x0300 dans les
+champs Split1 et Split2. Ces champs sont situés dans la section Track Name.
+
+- L'option Spa98 va tenter de simuler le départ du Grand Prix de Belgique '98.
+
+- Zoom dans le cockpit. C'est la même chose que le zoom dans la vue chasse,
+qui peut être changée avec les clés 6 et 7. Pour le cockpit, les changements
+doivent être faits dans le fichier gp2lap.cfg. Voici comment:
+
+           CockpitZoom = 256
+
+La valeur 256 est la valeur par défaut de GP2. Plus la valeur est petite, plus
+vous vous éloignez, ce qui entraine un effet de plus grande vitesse, mais
+aussi des voitures "étirées". C'est semblable à l'option champs de vision dans
+Quake.
+
+- Photographies. Plus besoin de pcxdump maintenant. Pour créer une
+photographie, appuyez simplement sur F12. Un fichier nommé gp2_xxxx.bmp sera
+créé.
+
+- En appuyant sur F8, vous pouvez pauser le jeu comme avec "p" ou <espace>,
+mais sans le message "paused".
+
+- Hauteur de l'affichage à l'écran. Spécifiez la hauteur en pixels avec:
+
+         DrawLines = 194
+
+Cette valeur est en pixels et a un maximum de 479.
+
+- Valeurs Rcr. Selon Vincent Van Vugt: Plus la valeur est petite, le plus
+rapidement le jeux va utiliser le rcr-jam. Si la valeur est de 0, le jeux ne
+va qu'utiliser le rcr-jam (et c'est vraiment laid en passant). Les Rcr-jams
+utilisent moins de pouvoir sur le processeur alors c'est utile pour ceux qui
+ont un ordinateur plus vieux. Vous pouvez spécifier les valeurs avec les
+options suivantes:
+
+          VgaRcr1 = 2128
+          SvgaRcr2 = 3200
+La distance où le Rcr-jam va être utilisé si vous êtes dans la vue cockpit.
+
+          VgaRcr2 = 2128
+          SvgaRcr2 = 3200
+La distance où le Rcr-jam va être utilisé si vous êtes dans une vue camera sur
+la voiture. Celle-ci est utilisé avec le Car Edito de Paul Hoad.
+
+          VgaRcr3 = 2640
+          SvgaRcr3 = 4096
+La distance où le Rcr-jam va être utilisé si vous êtes dans une vue camera sur
+le circuit ou si vous regardez du devant ou du derrière de la voiture.
+
+
+
+
+Le système d'informations
+=========================
+
+Introduction
+------------
+Quand vous jouez avec GP2, GP2Lap attends et ne fait rien, il attend que des
+evênements spécifiques adviennent. Ces evênements incluent: Démarrer GP2,
+démarrer une session, charger une partie, entrée et sortie des puits, franchir
+la ligne d'arrivée, etc.
+
+A chacun de ces evênements, le système d'informations receuille des
+informations sur cet evênement, et elles sont gardées en mémoire. Quand vous
+sauvez un hotlap ou une partie, la plupart de ces informations sont attachés
+au fichier. Ces fichiers sont appelés "GP2Lap extended files".
+
+Depuis la version 1.07, il est possible de sauver ces informations sur un
+fichier séparé en format .GLx. La ligne suivante active cette fonction:
+
+          logGLX = 1
+
+Le fichier .GLx aura le même nom que la partie ou le hotlap sauvé, et il
+contiendra aussi le nom des pilotes et les reglages de la voiture. Ces
+fichiers peuvent être lus par HOF2Lap 0.55+ et F1LapView 1.02+.
+
+En plus, une fonction peut vous permettre de voir les informations des
+voitures controlées par l'ordinateur en activant cette commande:
+
+          logCC = 1
+
+Cette option ne fonctionnera pas avec les GP2Lap extended files parce que le
+nombre de données dépasserait la limite de données pour une partie sauvegardée
+dans GP2.
+
+
+
+Hotlaps
+-------
+Les extended hotlaps contiennent des informations générales et des
+informations pour ce tour spécifique.
+
+Les informations générales incluent, toutes les valeurs physiques
+(quelques-unes peuvent être changées avec l'éditeur Quick 'n' Dirty), les
+valeurs limites des dommages, la vitesse limite dans les puits, les
+informations sur le circuit, les performances des voitures de l'ordinateur, et
+plus.
+
+Les informations sur le hotlap incluent, la valeur moyenne et maximale de
+l'occupation du processeur (pour détecter la conduite "lente"), et plus.
+
+D'autres informations peuvent être extraites du hotlap avec HOF2Lap, version
+0.50 ou plus. Visitez le site web de HOF2Lap pour télécharger le programme à:
+http://rsdi.home.xs4all.nl/hof2lap/
+
+
+Parties sauvées
+---------------
+Les extended saved games contiennent des informations générales et des
+informations sur tout les tours. Cette information peut être extraite avec
+HOF2Lap. Quand une extended saved game est chargée, ses informations pour
+chaques tours vont être chargés aussi.
+
+
+
+Avertissement
+-------------
+Si vous vous faites disqualifier, ne nous contactez pas. Contactez plutôt le
+ou les directeurs de la compétition. Si l'extended save game ou hotlap semble
+avoir été corrompue et que c'est la cause de votre disqualification, le
+directeur va nous contacter, nous verrons ce que nous pouvons faire.
+Souvenez-vous que les choses comme un circuit édité (peu importe aussi minime
+peut être le changement) est enregistré par GP2Lap et peut causer votre
+disqualification. Soyez sûr que vous utilisez le bon carset et le bon circuit
+(celui spécifié par les reglements de la compétition). Souvenez-vous aussi que
+la validation de votre partie sauvée est faite par le directeur, un script de
+données, et/ou une équipe de vérification, et non par GP2Lap ou HOF2Lap.
+GP2Lap ne fait qu'enregistrer les données brut, il ne les interprête pas.
+
+
+Débogueur
+---------
+GP2Lap peut enregistrer quelques données à propos de la plupart des evênements
+dans un fichier séparé nommé "gp2lap.log". C'est un texte lisible, vous pouvez
+donc voir ce qui est arrivé exactement, ou vous pouvez nous l'envoyer au cas
+où vous croyez qu'il y a quelque chose qui ne fonctionne pas. Ca ne sert à
+rien d'autre, vous pouvez donc l'ignorer si vous n'en avez pas besoin. Vous
+pouvez l'activer avec cette ligne dans le fichier de configuration:
+
+logDebug = 1
+
+Le nom du fichier débogueur peut être spécifié avec:
+
+logDebugName = "gp2lap.log"
+
+Notez bien: Ce n'est pas le fichier d'information principal! Il ne sert qu'à
+déboguer. Le vrai fichier d'information principal est attaché à vos fichiers
+sauvés.
+
+Vous pouvez voir ces informations pendant le jeu en pressant sur "2" quand
+vous êtes dans le cockpit. Pour spécifier le nombre de lignes que GP2Lap
+utilisera:
+
+        logDebugScreenLines
+
+Les limites sont de 3 à 20, 12 est la valeur par défaut.
+
+
+Extension des fichiers de performance
+-------------------------------------
+La version 1.04 introduit l'extension des données de performances. Pour
+l'activer, ajoutez la ligne suivante dans le fichier gp2lap.cfg:
+
+logPerf = 1
+
+GP2Lap ajoutera les données position de votre voiture et la vitesse de
+résolution de vos roues au fichier performance que vous sauvez. Il sauvera
+aussi un fichier de données spéciales avec les données du circuit dans le
+répertoire "gp2lpdat" dans le répertoire principal de GP2. Ce fichier est
+utilisé par F1PerfView pour dessiner le circuit.
+
+Attention: Avec des tours plus longs (environ 1m40 et plus, ou plus gros que
+75 KB), le graphique de performance de GP2 se plaindra de la grosseur du
+fichier que vous chargerez quand vous chargerez un fichier de performances. Si
+vous utilisez le graphique de GP2 et non F1PerfView, désactivez l'option
+logPerf pour éviter cette erreur.
+
+
+
+
+A la ligne
+==========
+
+GP2Lap vous apporte quelques informations supplémentaires pour améliorer votre
+jeux. Ne vous êtes vous jamais demandé vos temps pour les tours quand vous
+entrez dans les puits et en sortez? Maintenant vous pouvez les avoir. Etes
+vous fatigué d'attendre la prochaine ligne droite pour prendre un regard
+rapide aux temps des autres voitures? Vous les avez maintenant et encore
+plus...
+
+
+Usage
+-----
+Lorsque vous êtes assis dans votre voiture, appuyez simplement sur '9' pour
+l'activer.  En plus de "At the line", vous avez d'autres tableaux, les clés
+suivante vous permettent de naviguer entre-eux:
+
+      '9' : Change la grandeur du tableau.
+      '~' : Navigue entre les positions (note: c'est la clé au-dessus de TAB
+            et à gauche de 1).  Utilisez Shift pour naviguer à reculon.        
+      TAB : Change les tableaux. Utilisez Shift pour naviguer à reculon.
+      '0' : Pour désactiver le tableau.
+
+Pour l'instant, les tableaux suivant sont disponibles:
+
+(1)  Pos  Driver             Behind
+     ------------------------------
+      01. Hill          1:43:47.407
+      02. R Schumacher  +0.932
+      03. Alesi         +7.240
+      04. Frentzen      +32.242
+      05. Diniz         +51.682
+
+     Montre les écarts entre les pilotes.
+
+(2)  Pos  Driver             Laptime
+     -------------------------------
+      01. Hill          1:47.407  <- 3
+      02. R Schumacher  1:49.932
+      03. Alesi         1:47.240  <- 2
+      04. Frentzen      1:32.242  <- 1
+      05. Diniz         1:51.682
+
+Montre les temps actuels de chaque voitures. Les trois plus rapides seront
+indiqués.
+
+
+Notes
+-----
+- Ces tables seront mises-à-jour en temps réel, mais peuvent contenir quelques
+  erreurs graphiques, surtout après une reprise ou en chargeant une partie.
+- Ces tables ne fonctionnent que durant une course. Dans les autres sessions,
+  elles sont remplacées par deux autres tables qui montrent les temps dans
+  chaques sections et le tour idéal. Les temps des sections peuvent être
+  comparés avec tout autre pilote. 
+- L'affichage de ces tableaux peut ajouter jusqu'à 10% d'occupation de votre
+  processeur, tout dépendant des configurations de votre système.
+
+
+Configuration
+-------------
+Les options de configuration suivantes sont disponibles:
+
+atlNoFastestLap
+        Ne montre pas "Fastest Lap by...." si activé.
+atlSplit1Color
+        Basé sur la palette de GP2, valeur par défaut: 135 (Bleu pâle).
+atlSplit2Color
+        Valeur par défaut: 125 (Bleu).
+atlLineColor
+        Valeur par défaut: 151 (Bleu foncé).
+atlAcrossTop
+        Montre des informations au haut de l'écran.
+atlMarkTopx
+        Combien de voitures sont indiquées sur le tableau des temps de tours, valeurs
+        de 3 à 9.
+
+
+
+Carte du circuit
+================
+
+Cette fonction vous montre une vue aérienne du circuit, ce qui vous donnera
+l'opportunité de savoir ce qui se passe ailleur sur le circuit.
+
+Par exemple, il peut être plus facile pendant une qualification de déterminer
+quand le circuit est libre (ou non, si vous voulez retarder un autre pilote),
+pour démarrer votre tour de lancement au bon moment. Elle peut être aussi
+utile pour savoir où rejoindre la piste sans vous faire frapper par une autre
+voiture quand vous êtes sortis de piste.
+
+La carte vous montre la piste, la ligne des puits, et toutes les voitures sur
+la piste représentent un petit point (ou hors de la piste s'ils ont sortis).
+
+
+Usage
+-----
+La carte peut être activée en pressant sur '8'. Appuyez une autre fois sur '8'
+pour changer la position de la carte (gauche, centre, droite, haut, bas,
+etc.). Si elle est placée sur la gauche ou sur la droite, elle sera coupée
+pour ne pas vous distraire.
+
+Quand la carte est activée, appuyez sur <TAB> pour changer le zoom sur la
+carte. Il y a six niveau de zoom. Le plus petit vous montrera le circuit en
+entier, et elle ne bougera pas. Les autres niveaux de zoom centrent la
+position de la voiture sélectionnée, la carte défilera pour suivre cette
+voiture. Elle va aussi tourner selon la vitesse de la voiture sélectionnée.
+Cette fonction peut être activée avec la touche 'm'.
+
+Pour désactiver la carte, appuyez sur '0'.
+
+Appuyez sur ~ (au-dessus de TAB) pour changer la couleur de la piste.
+
+
+Couleur des voitures
+--------------------
+La voitures du joueur est un point clignotant rouge. S'il est appellé au puit,
+le point clignotant sera jaune.
+
+Les voitures de l'ordinateur sont des points blanc. S'ils vont au puits, ils
+seront jaunes. Si vous sélectionnez une voiture de l'ordinateur (avec les
+flèches haut/bas), elle aura un point clignotant vert, mème s'il est appellé
+aux puits.
+
+Si une voiture s'est retirée, elle sera représentée par un point rouge foncé.
+Elle reste en vue, même si elle a été retirée du circuit (elle est derrière le
+mur).
+
+
+Notes
+-----
+La largueur de la piste peut ne pas être exacte. Parce que ce n'est pas
+calculé, mais les pixels sont juste fait plus gros selon le niveau de zoom.
+
+
+Configuration
+-------------
+Les options de configuration de la carte sont:
+
+mapZoom
+       Niveau de zoom, valeurs de 0 à 5, 0 montre la carte en entier.
+mapTrackColor
+       Couleur de la piste initiale.
+mapHAlign
+       Alignement initial horizontal
+mapVAlign
+       Alignement initial vertical. Relatif à mapMaxY
+mapRotate
+       Fonction de rotation de la piste (1 signifie activé).
+mapMaxY
+       Coupure de la carte sur l'axe Y. Le maximum est la valeur de Drawlines. Notez
+       que le vue extérieure est, au plus haut, de 400 pixels.  La moitié de cette
+       valeur est utilisée en VGA.
+
+
+Organisateur de circuits
+========================
+
+Depuis la version 1.13, il est possible de dire à GP2Lap quel fichier circuit
+doit être utilisé. Ils peuvent être spécifiés dans le fichier .cfg. Les
+options suivantes sont disponibles:
+
+f1ct01
+        Chemin du fichier circuit. Ex. "circuits\brésil99.dat".
+f1ct02
+...
+f1ct16
+
+Les chemins spécifiés doivent appartenir au répertoire GP2 et doivent être en
+format de nom DOS.
+
+Options avancées:
+
+CatchTrackInfos
+        Essaie de détecter le GP2INFO des fichiers circuits modifiés. Ces
+        informations seront affichés au bas du menu des circuits. Plus important,
+        cette fonction peut même corriger les tables encodées de GP2 et corrigera les
+        distances, vitesses moyennes, tours en jeu multijoueurs, etc.  CatchSplitSegs
+        Essaie de détecter les sections splits des circuits modifiés.
+MenuTrackMap
+        Dessine une simple carte dans le menu de sélection des circuits. Ceci
+        remplace l'image originale. Par défaut 0 (off).
+
+
+
+
+Conection Ipx
+=============
+
+Depuis la version 1.01, GP2Lap supporte la conection ipx pour un jeu à deux
+joueurs.
+
+
+Notes
+-----
+- Vous ne pouvez jouer qu'avec un autre joueur.
+- C'est exactement comme utiliser une conection en série mais en utilisant
+  l'interface Ipx.
+- Ne vous attendez pas à des performances extraordinaires, même si une
+  personne nous a déja dit que c'était plus rapide que par conection en série.
+
+
+Usage
+-----
+- Pour préparer une conection, spécifiez ce qui suit dans gp2lap.cfg:
+
+  UseIPXLink = 1
+  MyLinkName = "Votre nom ici"
+
+- Après avoir démarré gp2lap.exe, vous verrez:
+
+  >>>Searching players [-]
+
+- Quand Gp2Lap a trouvé quelques joueurs, voici ce que vous verrez:
+
+  >>>Found 2 players. Choose player -["Paul Tracy" (00001B30BC57)]
+
+- Choisissez le joueur contre lequel vous voulez jouer, en utilisant les
+  flèches <haut>/<bas> ou <enter>. Ensuite, vous verrez ceci:
+
+  >>>Awaiting reply from "Paul Tracy" [/]
+
+- Vous serez avertis si la personne veut ou ne veut pas jouer avec vous.
+
+
+
+Données techniques
+------------------
+- Utilise présentement le socket ipx 0x5100 seulement.
+- Nous avons fait quelques test concluants sous DOS et (!) Win95.
+
+
+
+
+HOF2.5
+======
+
+La version 1.03 inclus un mode HOF2.5.
+Vous pouvez l'activer avec la ligne suivante dans le fichier gp2lap.cfg:
+
+hof25Enable = 1
+
+La distribution GP2Lap inclus un exemple de configuration pour HOF2.5, et un
+fichier .bat (hof25.bat) pour démarrer GP2Lap avec ce fichier .cfg.
+
+Pendant ce mode, GP2Lap fera quelque vérifications supplémentaires pour vos
+hotlaps. Spécialement pour les hotlaps qui seront enregistrés dans le Hall Of
+Fame 2.5. Ceci n'affectera pas les courses pour les ligues puisque ce mode ne
+fonctionne que durant les pratique sans limites. Mais si vous ne l'utilisez
+pas, il est conseillé de le désactivé complètement, puisqu'à quelques places,
+GP2Lap ne vérifie pas le mode de session (quand un circuit est chargé).
+
+
+Vérifications supplémentaires
+-----------------------------
+Les choses suivantes sont présentement vérifiées:
+- Le circuit doit être compatible HOF2.5. Tous les circuits originaux et tous
+  les circuits téléchargés du site Internet de HOF2.5 sont compatibles HOF2.5.
+  GP2Lap va vérifier un circuit après que celui-ci est chargé. Les circuits
+  doivent aussi être installés dans le bon ordre (slot). 
+- Couper les chicanes. GP2Lap vérifie si vous avez coupé une chicane. Si c'est
+  le cas, vous perdrez toute roue qui ne touche pas à la piste. 
+- Charger une partie. Si vous chargez votre partie depuis la pratique sans
+  limite, cette partie doit avoir été sauvée quand GP2Lap était actif et en mode
+  HOF2.5. 
+- Ralentir avant le début d'un tour. Quand vous chargez votre partie à la fin
+  d'un tour de réchauffement, vous devez avoir sauvé votre partie avant la
+  dernière courbe. Pour expliquer, GP2Lap vérifie si vous avez ralentis entre le
+  chargement de la partie et le début du tour pour au moins environ une
+  demi-seconde. Si vous n'avez pas ralentis, un "2" va apparaitre avec un
+  avertissement que ce tour sera disqualifié. 
+- Modifications des détails. Pour prévenir l'influence de l'occupation du
+  processeur durant un tour, GP2Lap vérifie tous les changements de détails
+  (alt-d). S'il en détecte, le tour est disqualifié. 
+- Modifications de l'indestructibilité. Dans HOF2.5, l'usage de la fonction F4
+  n'est pas permise. Si GP2Lap détecte qu'elle est utilisée durant un tour, le
+  tour sera disqualifié.
+
+Pour quelques unes de ces vérifications, des messages peuvent apparaitre quand
+vous chargez un circuit ou en sauvant un hotlap, vous informant de la
+disqualification. Dans certains cas (les quatres derniers des vérifications
+mentionnées plus haut), le hotlap sauvé ne contiendra aucune information
+supplémentaire.
+
+Visitez la page web de HOF2.5 pour plus d'informations:
+
+         Analog:  http://www.sim-racing.net/HOF25/main_menu.htm
+         Digital: http://gallery.uunet.be/year1440/index.html
+
+
+
+
+Remerciements
+=============
+
+Nous aimerions remercier les personnes suivantes:
+
+Jo Helsen. Sans lui, GP2Lap n'existerait pas.
+
+Ainsi que (en ordre alphabétique):
+Marc Aarts, Marcel Borsboom, Anton Dachounine, Robert Doyle, Dimitri Gerards,
+Chris Graff, Steve Holgeth, Ruben Jubeh, Enrico Marcolin, Chris Meech, Cesar
+Mello, Ari Nieminen, Christopher Orr, Rafa, Jacques Rousseau, Daniel Ryan,
+Marcel Schot, Robin Smit, Marc Thibeault, Ivanhoe Vasiljevich, Vincent van
+Vugt, Mike Wallace et Larry Watson.
+
+Trevor Kellaway, pour avoir créé GPLapTim, ce programme a inspiré directement
+GP2Lap.
+
+Toute autre personne qu'on aurait pû oublier.
+
+
+
+
+Révisions
+=========
+Version 1.14, 12 janvier 2000
+          - Les valeur pour l'usure des pneus sont maintenant enregistrées. Toute les valeurs
+            par défaut étaient auparavant enregistrées dans le checksum initial, mais
+            maintenant, GP2Lap corrige cette table, elle doit être enregistrée séparement, 
+            autrement vous auriez à regarder le hotlap pour le détecter (les voitures 
+            s'endommageraient). Une note pour les vérificateurs de fichiers: Il est mieux de
+            toujours voir les hotlaps, parce que c'est toujours la meilleur façon de 
+            vérifier la validité des données éditablesqui ne sont pas enregistrées avec le
+            fichier hotlap (comme un fichier de circuit).
+
+Version 1.13, 09 janvier 2000
+          - Organisateur de circuits intégré. Ceci devrait regler le problème avec les
+            distances, vitesse moyenne, etc. Regardez la section "Organisateur de Circuits"
+            pour plus d'informations.
+          - Corrigé le problème avec les touches. Les touches fonctionnent avec les vues
+            extérieures de nouveau.
+
+Version 1.12, 24 décembre 1999
+          - Activation de plusieurs pages avec la touche <ctrl> (attention: l'usage de cette
+            fonction utilise beaucoup plus l'occupation de processeur).
+          - La création d'images devrait maintenant fonctionner avec la plupart des cartes 
+            video.
+          - Si utilisé, le mode HOF2.5 est maintenant actif pour toutes les sessions hors
+            course.
+          - Éliminé le message 'incompatible' qui apparait après avoir chargé une partie
+            compatible. Si vous regardez un vieux hotlap, assurez vous de charger une partie
+            compatible ensuite pour éviter des problèmes d'incompatibilité (ou redémarrez GP2
+            si vous voulez débuter une nouvelle seseion pour une ligue).
+          - Ajout de la vérification de paranoia pour la compatibilité des parties sauvegardées
+            (le chargement dune partie qui a été sauvé avec toute version avant 1.12 seront
+            marquées "anciennes" et avant la version 1.07, seront marquées "incompatibles").
+          - Corrigé le problème du chargement de parties décompressées (normalement, elles
+            étaient seulement décompressées avec la première version de la version 1.11, qui
+            contenait une problème qui causait ceci).
+            Merci à Christopher Brylka et Daniel Ryan pour leur aide pour trouver ce problème.
+            Ceci serait la cause de plusieurs parties incompatibles des pilotes de LFRS.
+          - Grosseur des points configurables sur la carte.
+          - Points représentants les splits sur la carte.
+          - Changé la hauteur de la page "2" en la resélectionnant.
+
+Version 1.11, 10 novembre 1999
+          - Corrigé At the Line et ajouté des fonctions.
+          - Ajouté plusieurs options .cfg pour At the Line.
+          - Carte rotative.
+          - Support VGA pour la carte.
+          - Ajouté plusieurs options .cfg pour la carte.
+          - Hauteur de l'affichage ajustable.
+          - Gel de l'écran sans le message "paused" en appuyant sur F8.
+          - Les valeures Rcr expliquées.
+          - Support Pod. S'il arrive à quelqu'un d'en avoir un, svp, contactez-nous.
+
+Version 1.10 BETA, 24 septembre 1999
+          - Retiré quelques incompatibilitées avec Windows. Si vous aviez des problèmes à
+            fonctionner sous Windows, essayez cette version beta et vérifiez si le problème
+            persiste. Si oui, contactez-nous svp.
+          - Corrigé le bogue qui causait l'arrêt du jeu lors de la sauvegarde d'une partie 
+            sous Windows.
+          - Corrigé la sauvegarde de parties quand vous utilisez gp2.exe modifié avec GP2Video.
+            Merci à Rafa pour nous avoir expliqué comment corriger celui-ci.
+          - "Against" dans le At the Line pour comparer les temps par secteurs et pour calculer
+            le temps ideal pendant une session hors-course. Notez que le tableau 'behind' ne
+            fonctionne plus dans cette version beta. Ceci devrait être corrigé dans la version
+            officielle.
+          - Ajouté le support VGA pour At the Line.
+          - Création d'images avec F12 (gp2_xxxx.bmp).
+          - Zoom du cockpit pour une meilleure (ou pire) sensation de vitesse.
+
+Version 1.09, 14 Aout 1999
+          - Devrait maintenant fonctionner sous Windows 98 sans suspend.
+          - Ajouté une option pour cacher Windows 3/9x pour GP2. Ceci pourrait résoudre quelques
+            problèmes potentiels.
+          - Dans la carte, les voitures controlées par l'ordinateur seront grises si elles ne
+            sont pas sur le même tour que le meneur.
+
+Version 1.08, 6 Aout 1999
+          - Ajouté une carte.
+
+Version 1.07, 28 Juillet 1999
+          - Amélioration des vérifications sur les changements des checksums après avoir chargé  
+            une partie. Les parties sauvées seront maintenant "incompatibles" non seulement en    
+            chargant une partie avec un checksum différent, mais aussi si la partie n'était pas
+            extended du tout. Aussi, cette marque est gardée pour plus longtemps (jusqu'à la 
+            fermeture de GP2). La raison est que GP2Lap ne peut trouver les problèmes que le
+            chargement peut causer. Donc, si vous participer dans une ligue qui utilise GP2Lap 
+            pour valider vos parties sauvées, soyez sûr que vous chargez uniquement des 
+            "extended games", qui ont été sauvées avec les mêmes configurations, ou ne chargez
+            rien du tout.
+           -Ajout de sauvegarde de fichiers .GLx séparement avec des informations
+            supplémentaires, qui allouent aussi l'enregistrement des données pour les voitures
+            contrôlées par votre ordinateur.
+           -Désactivation de la vérification checksum des voitures contrôlées par votre
+            ordinateur (aussi longtemps que ce ne sera corrigé).
+
+Version 1.06, 02 avril 1999
+           -Détection des sections splits.
+           -Détection des noms de circuits dans les menu.
+           -Corrigé le problème qui mêlait la détection des noms dans les menus dans les
+            données extended.
+           -Enregistrement du checksum des performances des voitures contrôlées par votre
+            ordinateur.
+           -Ajout de vérifications pour la détection de trichage.
+           -Les données extended sont maintenant préservées durant le (re)chargement d'une
+            partie.
+
+Version 1.05, 16 janvier 1999
+           -Corrigé le problème: les données pour les circuits sont maintenant sauvées 
+            correctement (il apparait un message "load aborted" à la place).
+
+Version 1.04, 10 janvier 1999
+           -Ajouté l'extension des fichiers perf avec les données des positions des voitures.
+
+Version 1.03, 09 décembre 1998
+           -Corrigé les temps de session et de tours pour les entrées aux puits.
+           -Ajout de la fonction HOF2.5. Visitez le site de HOF2.5 pour plus d'informations.
+           -Ajout de la fonction avance-rapide durant les reprises (avec la touche 'f').
+           -Enregistrement du temps slomo (nombre de secondes le OP était >100%).
+           -Corrigé quelques problèmes.
+
+Version 1.02, 24 octobre 1998
+           -Ajout de la fonction '2', permettant de voir des informations à l'écran durant une
+            partie.
+           -Quelques améliorations mineures.
+           -Corrigé quelques problèmes.
+
+Version 1.01, 14 octobre 1998
+           - Ajout de la connection IPX.
+           - Ajout des temps splits durant les courses.
+           - Désactivation de l'enregistrement de l'OP avant que la course ait débuté.
+           - Ajout de quelques fonction encore au stade expérimental (pour utilisateurs 
+             expérimentés seulement!).
+           - Corrigé quelques problèmes.
+
+Version 1.00, 26 septembre 1998
+           - Première version.
+
+
+
+
+Pour nous contacter
+===================
+
+Pour reporter tout problème, une plainte ou une suggestion, écrivez nous à:
+
+  gp2lap@gmx.net
+
+Le site web de GP2Lap est à l'addresse:
+
+  http://gp2lap.tsx.org
+
+
+
+
+Traduction par: Martin Pelletier

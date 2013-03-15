@@ -1,0 +1,158 @@
+GP2Lap FAQ. Last updated: 24-Sep-1999
+
+==============================================
+===== GENERAL ================================
+==============================================
+
+Q. Can I run GP2Lap under Win95/98? (I have to because of my Pnp <device>)
+
+A. Yes, you can, but it can cause crashes while running GP2 in a dos box and
+saving files with it.  This should be fixed in v1.10 BETA, so please try that
+version if you're having trouble running GP2Lap under Windows.
+
+
+-----------------------------------------------------------------------------
+Q. I tried running GP2Lap in DOS, but it just freezes. How can I get it
+to work?
+
+A. You probably forgot to load a DOS sound driver. Try to run GP2 on its
+own. If that doesn't work and "gp2.exe nosound" works alright (although
+without sound), then this is probably the case.
+If GP2 works well on its own and not with GP2Lap, and you have Win98, then
+make sure you have downloaded GP2Lap 1.09, which contains a fix for a
+problem with these symptoms.
+If you've tried everything and it still doesn't work, enable logDebug and
+logDebugFlush in gp2lap.cfg with logDebugName="freeze.log", and start gp2
+with "gp2.exe log:safe". Then run gp2lap, and after it freezes reset your
+computer and send us the files gp2log.txt and freeze.log, along with
+a clear description of the symptoms and your system configuration.
+
+
+-----------------------------------------------------------------------------
+Q. When I run GP2Lap, I am forced to choose VGA mode.  Is this just because I
+don't have much RAM (8mb), or is there something else I should do?  I have
+tried turning off all the options in the .cfg file, but it still will not let
+me select SVGA...
+
+A. Most probably not enough RAM. You need at least 16MB. When using GP2Video
+you need about 32MB.
+
+
+-----------------------------------------------------------------------------
+Q. I think pressing one of the keys causes the sound of the tyres to
+disappear. Is this a bug in GP2Lap?
+
+A. You've probably pressed '-' (right of the '0') by accident. Press '='
+(with the '+' above it) to get the sound back.
+
+
+==============================================
+===== LOGGING ================================
+==============================================
+
+Q. I downloaded GP2lap but I don't know how to use it.
+I mean, I activated it in the game, but how can I see the info from my saved
+files?
+
+A. You can use HOF2Lap to see the logged information. Use the -d option with it.
+You can also use this line in the gp2lap.cfg file:
+  logDebug = 1
+This will show most of the info in the gp2lap.log file.
+
+
+Q. How do I save the so called .GLx file?
+
+A. It is created automatically upon saving a race (.QRx, .RAx, .CHx)
+if the .cfg contains the line: logGLX = 1
+The file name will be the same as the race, but with a .GLx extension.
+
+
+Q. When I view the .GLx file it doesn't show the computer cars.
+
+A. Put these lines in the .cfg file:
+   logGLX = 1
+   logCC = 1
+
+
+
+==============================================
+===== AT THE LINE ============================
+==============================================
+
+Q. Can you put the track map next to At The Line?
+
+A. Yes, we might add an option for this in a later version.
+
+
+
+Q. Can you show differences at the bottom of the screen
+just like on tv?
+
+A. No.
+
+
+==============================================
+===== IPX related ============================
+==============================================
+
+Q. i have a problem. i don't know how to connect my game with my friends game.
+i have a network here, and i'm used to these stuff but with Gp2 there's
+no network icon. Anyway i entered the "linkup menu" i choose direct link
+and when i press "connect" the game crashes automatically.
+
+A. In preparation to starting a link, you have to modify your configuration
+file. (by default gp2lap.cfg in the same directory as gp2lap.exe) Specify
+the following in gp2lap.cfg:
+
+  UseIPXLink = 1                 ; tell gp2lap to start the link
+  MyLinkName = "YourName Here"   ; your link name within GP2Lap
+
+Now follow the steps described in gp2lap.txt. If a connection has been
+established by GP2Lap, GP2 will be started automatically. Now we have to
+do the same within GP2: The normal "Linkup Menu" has been renamed "IPX
+Linkup Menu". Within the menu you only have to choose between Lead
+and Follow, just like using serial linking. Now hit "Connect" to start.
+
+About the crash: I've experienced that too. And even while running
+GP2 *alone* (i.e. not using GP2Lap)! So probably GP2 to blame here.
+
+-----------------------------------------------------------------------------
+Q. One thing: i cannot save game in multiplayer game (ipx mode), and
+GP2 couldn't save the game state (graphics etc.). It wrote simply that
+it 'Cant find directory'. What's that?
+
+A: This seems to happen under plain DOS using the Novell client software
+(vlm, ipxodi, lsl etc...). It's not affected by the amount of memory
+currently available.
+
+It seems to be a problem with the int 21h extensions provided by vlm!?
+...
+
+-----------------------------------------------------------------------------
+Q. In the GP2Lap.txt you mention that you ran it sucessfully in Win95
+and DOS. By DOS, what exactly are you referring to? Do you mean starting
+from an actual pure DOS startup without ever entering Windows? While trying
+that, all I got was "***IPX: can't find IPX driver". What should I do
+to get this network link working under DOS?
+
+A. Win95's IPX driver is only active while Win95 is being loaded. If you
+want to use the network link under DOS, you have to load DOS ipx drivers.
+Maybe your network card has been shipped with some "old" disks containg a
+"pure DOS" IPX driver? For instance, I have two (rather old) Novell Ethernet
+cards here (NE2000, ISA 16 bit), with DOS IPX drivers to be found on the
+Novell Netware 3.x netware client driver disk. Maybe you can try to:
+  - find this disk somewhere,
+  - ask your local dealer,
+  - search the manufacturer's website for DOS drivers to be downloaded.
+
+
+-----------------------------------------------------------------------------
+Q. The only thing i'm having a problem with is the game in IPX once it is
+linked. It's fine through the setup, drivers, menus and graphics etc but
+on starting a race it freezes with the LINK DATA MISMATCH message.
+This happens whatever I do!! Repairing doesnt help.
+
+A. That's a common mistake. Make sure that both copies of GP2 are equal
+in terms of installed tracks, gp2.exe patch state, etc. The easiest way
+to achieve this, is simply copying your whole gp2 directory over to the
+other computer.
