@@ -28,7 +28,6 @@ PUBDOCFILES=$(PUBDIR)\gp2lap_faq.txt $(PUBDIR)\gp2lap_txt.html $(PUBDIR)\gp2lapf
 CC=wcc386
 LINK=wlink
 AS=wasm
-RM=del
 CP=copy
 MKDIR=mkdir
 ZIP=zip
@@ -38,10 +37,9 @@ COMPRESS=build\upx
 ################################################################
 # Tool options
 
-CCOPTS=-i=$(INCDIR) -bt=dos4g -sg -w=5 -wcd=201 -wcd=202 -wcd=300 -wcd=301 -wcd=400
-LINKOPTS=Libpath $(LIBDIR) system dos4g option STUB=$(WSTUB)
-ASOPTS=-bt=dos4g
-RMOPTS=/e /q
+CCOPTS=-i=$(INCDIR) -bt=dos4g -sg -w=5 -wcd=201 -wcd=202 -wcd=300 -wcd=301 -wcd=400 -q
+LINKOPTS=Libpath $(LIBDIR) system dos4g option STUB=$(WSTUB) option Q
+ASOPTS=-bt=dos4g -q
 CPOPTS=
 MKDIROPTS=
 ZIPOPTS=-9 -j
@@ -162,22 +160,24 @@ $(PUBDIR)\gp2lap.exe:	$(OUTDIR)\gp2lap.exe
 
 $(PUBDIR)\gp2lap.zip:	$(ZIPFILES)
 	@$(COMPRESS) $(COMPRESSOPTS) $(PUBDIR)\gp2lap.exe
-	-@$(RM) $(RMOPTS) $@
+	-@%erase $@
 	@$(ZIP) $(ZIPOPTS) $@ $(ZIPFILES)
-	-@$(RM) $(RMOPTS) $(PUBDIR)\gp2lap.exe
+	@%erase $(PUBDIR)\gp2lap.exe
 
 pubdocs:	$(PUBDOCFILES)
-
+	@%null
 
 init:
 	-@$(MKDIR) $(MKDIROPTS) $(OUTDIR) $(PUBDIR)
 
 publish:	$(PUBDIR)\gp2lap.zip pubdocs
+	@%null
 
 clean:
-	-@$(RM) $(RMOPTS) $(OUTDIR)\*.obj $(OUTDIR)\*.err
+	-@rm -f $(OUTDIR)\*.obj $(OUTDIR)\*.err
 
 cleanall:	clean
-	-@$(RM) $(RMOPTS) $(OUTDIR)\gp2lap.exe $(PUBDIR)\gp2lap.zip $(PUBDOCFILES)
+	-@rm -f $(OUTDIR)\gp2lap.exe $(PUBDIR)\gp2lap.zip $(PUBDOCFILES)
 
 all:	publish clean
+	@%null
